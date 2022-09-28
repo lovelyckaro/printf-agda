@@ -16,16 +16,16 @@ open Show ⦃...⦄
 
 instance
   ShowString : Show String
-  ShowString = record {show = λ x → x}
+  ShowString .show = λ x → x
 
   ShowNat : Show Nat
-  ShowNat = record {show = primShowNat}
+  ShowNat .show = primShowNat
 
   ShowInt : Show Int
-  ShowInt = record {show = primShowInteger}
+  ShowInt .show = primShowInteger
 
   ShowFloat : Show Float
-  ShowFloat = record {show = primShowFloat}
+  ShowFloat .show = primShowFloat
 
 data _×_ (L R : Set) : Set where
   _,_ : L → R → L × R
