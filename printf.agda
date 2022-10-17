@@ -27,9 +27,6 @@ instance
   ShowFloat : Show Float
   ShowFloat .show = primShowFloat
 
-data _×_ (L R : Set) : Set where
-  _,_ : L → R → L × R
-
 toList : String → List Char
 toList = primStringToList
 
@@ -73,23 +70,23 @@ parseFormat : String → List Chunk
 parseFormat str = parseFormatList (toList str) [] []
 
 ChunkType : List Chunk → Set
-ChunkType [] = String
+ChunkType []               = String
 ChunkType (lit x ∷ chunks) = ChunkType chunks
-ChunkType (%s ∷ chunks) = String → ChunkType chunks
-ChunkType (%u ∷ chunks) = Nat → ChunkType chunks
-ChunkType (%d ∷ chunks) = Int → ChunkType chunks
-ChunkType (%f ∷ chunks) = Float → ChunkType chunks
+ChunkType (%s    ∷ chunks) = String → ChunkType chunks
+ChunkType (%u    ∷ chunks) = Nat    → ChunkType chunks
+ChunkType (%d    ∷ chunks) = Int → ChunkType chunks
+ChunkType (%f    ∷ chunks) = Float → ChunkType chunks
 
 PrintfType : String → Set
 PrintfType format = ChunkType (parseFormat format)
 
 printfHelper : (format : List Chunk) → String → ChunkType format
-printfHelper [] accum = accum
-printfHelper (lit x ∷ fmt) accum = printfHelper fmt (accum <> x)
-printfHelper (%s ∷ fmt) accum str = printfHelper fmt (accum <> show str)
-printfHelper (%u ∷ fmt) accum nat = printfHelper fmt (accum <> show nat)
-printfHelper (%d ∷ fmt) accum int = printfHelper fmt (accum <> show int)
-printfHelper (%f ∷ fmt) accum float = printfHelper fmt (accum <> show float)
+printfHelper []            accum       = accum
+printfHelper (lit x ∷ fmt) accum       = printfHelper fmt (accum <> x)
+printfHelper (%s ∷ fmt)    accum str   = printfHelper fmt (accum <> show str)
+printfHelper (%u ∷ fmt)    accum nat   = printfHelper fmt (accum <> show nat)
+printfHelper (%d ∷ fmt)    accum int   = printfHelper fmt (accum <> show int)
+printfHelper (%f ∷ fmt)    accum float = printfHelper fmt (accum <> show float)
 
 printf : (format : String) → PrintfType format
 printf format = printfHelper (parseFormat format) ""
@@ -98,7 +95,7 @@ example1 : String
 example1 = printf "Hello, World!"
 
 example2 : String
-example2 = printf "%s is %u years old" "Erik Brink" 23
+example2 = printf "%s is %f years old" "Erik Brink" 23.0
 
 helloName : String → String
 helloName = printf "Hello, %s!"
