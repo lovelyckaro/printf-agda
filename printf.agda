@@ -95,25 +95,10 @@ printf : (format : String) → PrintfType format
 printf format = printfHelper (parseFormat format) ""
 
 example1 : String
-example1 = printf "Who is a naughty boy? %s %s is a naughty boy, who is %u years old." "Erik" "Brink" 35
+example1 = printf "Hello, World!"
+
+example2 : String
+example2 = printf "%s is %u years old" "Erik Brink" 23
 
 helloName : String → String
 helloName = printf "Hello, %s!"
-
-{-
-
-format for above: %s ∷ lit " " ∷ %s ∷ lit " is a naughty boy, who is " ∷ %u ∷ lit " years old." ∷ []
-PrintfType should then be: String → String → Nat → String
-
-printf "%d is a Int, %u is a Nat" (negsuc 5) 5
-
-class Show a where
-  show :: a -> String
-
-instances = HashMap Type ShowInstance
-
-show x
-
-getShow <$> lookup (typeOf x) instances
-
--}
